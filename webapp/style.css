@@ -238,9 +238,7 @@ table {
 /* Responsive Adjustments */
 @media (max-width: 1024px) {
     .charts-section { grid-template-columns: 1fr; }
-}
-
-@media (max-width: 768px) {
+    
     .app-container {
         flex-direction: column;
     }
