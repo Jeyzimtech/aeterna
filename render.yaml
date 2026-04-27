@@ -1,9 +1,9 @@
 services:
-  - type: static
+  - type: web
     name: aeterna-sol-iv
-    env: static
+    runtime: static
     buildCommand: "pip install -r requirements.txt && python main.py"
-    publishPath: webapp
+    staticPublishPath: webapp
     envVars:
       - key: PYTHON_VERSION
         value: 3.10.0
