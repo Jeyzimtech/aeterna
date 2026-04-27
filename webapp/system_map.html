@@ -6,6 +6,8 @@
     <title>Aeterna Sol-IV - Live System Simulation</title>
     <link rel="stylesheet" href="style.css?v=1.2">
     <link rel="stylesheet" href="map_style.css?v=1.2">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
@@ -59,7 +61,7 @@
                                 <div class="node-content"><h4>TES</h4><div class="node-val" id="val-tes">-- %</div></div>
                             </div>
                             <div class="node-box diagram-node" id="node-power">
-                                <img src="images/power_turbine_1777200969536.png" class="node-img" alt="Power Block">
+                                <img src="images/power_turbine_1777200969536.png" class="node-img" alt="Power Block" loading="lazy">
                                 <div class="node-content"><h4>Power Block</h4><div class="node-val" id="val-elec">-- MWe</div></div>
                             </div>
                         </div>
@@ -200,8 +202,8 @@
         </main>
     </div>
 
-    <script src="data.js"></script>
-    <script src="map_app.js"></script>
+    <script src="data.js" defer></script>
+    <script src="map_app.js" defer></script>
     <script>
     (function(){
         const stageCols = document.querySelectorAll('.stage-col');

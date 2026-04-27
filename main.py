@@ -289,9 +289,10 @@ if __name__ == "__main__":
     # Output to Web Dashboard format
     os.makedirs('webapp', exist_ok=True)
     with open('webapp/data.js', 'w', encoding='utf-8') as f:
-        data_json = results_df.to_dict(orient='records')
-        f.write(f"const simData = {json.dumps(data_json)};")
-    print("Exported data to 'webapp/data.js' for Digital Twin dashboard")
+        # Optimize data size by rounding numbers
+        compact_data = results_df.round(2).to_dict(orient='records')
+        f.write(f"const simData = {json.dumps(compact_data)};")
+    print("Exported data to 'webapp/data.js' (optimized) for Digital Twin dashboard")
     
     # Print summary
     print_summary(results_df)
