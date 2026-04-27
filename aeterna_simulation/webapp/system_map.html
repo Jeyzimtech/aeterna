@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aeterna Sol-IV - Live System Simulation</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="map_style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="light-theme">
+    <div class="app-container">
+        <nav class="sidebar dark-sidebar">
+            <div class="logo"><span class="icon">☀️</span><h2>Aeterna<br><span>Sol-IV</span></h2></div>
+            <ul class="nav-links">
+                <li><a href="index.html">Dashboard</a></li>
+                <li class="active"><a href="system_map.html">System Map</a></li>
+                <li><a href="telemetry.html">Telemetry</a></li>
+            </ul>
+        </nav>
+
+        <main class="main-content map-main">
+            <header class="map-header">
+                <div>
+                    <h1>MODULAR CSP-BASED WATER–ENERGY INFRASTRUCTURE SYSTEM</h1>
+                    <p class="subtitle">Integrated Desalination, Treatment and Economic Utilization</p>
+                </div>
+                <div class="light-status"><span class="dot pulse"></span><span>System Online</span></div>
+            </header>
+
+            <div class="progress-bar">
+                <span class="progress-label">Stage:</span>
+                <div class="progress-dot" data-stage="0" title="Stage I"></div>
+                <div class="progress-dot" data-stage="1" title="Stage II"></div>
+                <div class="progress-dot" data-stage="2" title="Stage III"></div>
+                <div class="progress-dot" data-stage="3" title="Stage IV"></div>
+            </div>
+
+            <!-- FULL DIAGRAM -->
+            <div class="diagram-scroll">
+                <div class="diagram-container">
+                    <!-- STAGE 1 -->
+                    <div class="stage-col stage1" data-idx="0">
+                        <div class="stage-title s1-title">STAGE I<br><span>ENERGY GENERATION<br>(CSP PARTICLE SYSTEM)</span></div>
+                        <div class="node-box diagram-node" id="node-solar">
+                            <img src="images/csp_tower_1777200947910.png" class="node-img" alt="CSP Tower">
+                            <div class="node-content"><h4>Heliostat Field & Receiver</h4><div class="node-val" id="val-solar">-- MWth</div></div>
+                        </div>
+                        <div class="pipe pipe-v thermal-flow"></div>
+                        <div class="node-box" id="node-silica">
+                            <i class="fa-solid fa-cubes node-icon-fa" style="color:#d35400;"></i>
+                            <div class="node-content"><h4>Heated Silica Particles</h4><div class="node-val">800–1000°C</div></div>
+                        </div>
+                        <div class="pipe pipe-v thermal-flow"></div>
+                        <div class="row-nodes">
+                            <div class="node-box" id="node-tes">
+                                <i class="fa-solid fa-database node-icon-fa" style="color:#e67e22;"></i>
+                                <div class="node-content"><h4>TES</h4><div class="node-val" id="val-tes">-- %</div></div>
+                            </div>
+                            <div class="node-box diagram-node" id="node-power">
+                                <img src="images/power_turbine_1777200969536.png" class="node-img" alt="Power Block">
+                                <div class="node-content"><h4>Power Block</h4><div class="node-val" id="val-elec">-- MWe</div></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Bridge 1→2 -->
+                    <div class="bridge-col">
+                        <div class="pipe-bridge thermal-flow"></div>
+                        <div class="pipe-bridge elec-flow"></div>
+                    </div>
+
+                    <!-- STAGE 2 -->
+                    <div class="stage-col stage2" data-idx="1">
+                        <div class="stage-title s2-title">STAGE II<br><span>DESALINATION</span></div>
+                        <div class="route-box thermal-route">
+                            <h5>THERMAL ROUTE (MED + AD)</h5>
+                            <div class="row-nodes">
+                                <div class="node-box diagram-node" id="node-med">
+                                    <img src="images/med_desalination_1777200985268.png" class="node-img" alt="MED">
+                                    <div class="node-content"><h4>MED</h4><div class="node-val" id="val-med">-- m³</div></div>
+                                </div>
+                                <div class="pipe pipe-h thermal-flow"></div>
+                                <div class="node-box" id="node-ad">
+                                    <i class="fa-solid fa-recycle node-icon-fa" style="color:#d35400;"></i>
+                                    <div class="node-content"><h4>AD</h4><div class="node-val" id="val-ad">-- m³</div></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="route-box elec-route">
+                            <h5>ELECTRICAL ROUTE (RO)</h5>
+                            <div class="node-box diagram-node" id="node-ro">
+                                <img src="images/ro_desalination_1777200999285.png" class="node-img" alt="RO">
+                                <div class="node-content"><h4>RO System</h4><div class="node-val" id="val-ro">-- m³</div></div>
+                            </div>
+                        </div>
+                        <div class="pipe pipe-v water-flow"></div>
+                        <div class="node-box highlight">
+                            <i class="fa-solid fa-droplet node-icon-fa" style="color:#3498db;"></i>
+                            <div class="node-content"><h4>FRESHWATER</h4><div class="node-val" id="val-total-water">-- m³</div></div>
+                        </div>
+                    </div>
+
+                    <!-- Bridge 2→3 -->
+                    <div class="bridge-col">
+                        <div class="pipe-bridge water-flow"></div>
+                    </div>
+
+                    <!-- STAGE 3 -->
+                    <div class="stage-col stage3" data-idx="2">
+                        <div class="stage-title s3-title">STAGE III<br><span>WATER TREATMENT</span></div>
+                        <div class="node-stack">
+                            <div class="node-box diagram-node" id="node-filter">
+                                <img src="images/filtration_tank_1777201747770.png" class="node-img" alt="Filter"><h4>Filtration</h4>
+                            </div>
+                            <div class="pipe pipe-v process-flow"></div>
+                            <div class="node-box diagram-node" id="node-dose">
+                                <img src="images/chemical_dosing_1777201782209.png" class="node-img" alt="Dosing"><h4>Chemical Dosing</h4>
+                            </div>
+                            <div class="pipe pipe-v process-flow"></div>
+                            <div class="node-box diagram-node" id="node-past">
+                                <img src="images/thermal_pasteurization_1777201815671.png" class="node-img" alt="Pasteurization"><h4>Thermal Pasteurization</h4>
+                            </div>
+                            <div class="pipe pipe-v process-flow"></div>
+                            <div class="node-box diagram-node" id="node-uv">
+                                <img src="images/uv_disinfection_1777201843409.png" class="node-img" alt="UV"><h4>UV Disinfection</h4>
+                            </div>
+                            <div class="pipe pipe-v water-flow"></div>
+                            <div class="node-box highlight-safe">
+                                <i class="fa-solid fa-circle-check node-icon-fa" style="color:#27ae60;"></i>
+                                <div class="node-content"><h4>SAFE DRINKING WATER</h4></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Bridge 3→4 -->
+                    <div class="bridge-col">
+                        <div class="pipe-bridge elec-flow"></div>
+                        <div class="pipe-bridge water-flow"></div>
+                    </div>
+
+                    <!-- STAGE 4 -->
+                    <div class="stage-col stage4" data-idx="3">
+                        <div class="stage-title s4-title">STAGE IV<br><span>ECONOMIC INTEGRATION</span></div>
+                        <div class="node-stack spread">
+                            <div class="node-box export" id="node-export">
+                                <i class="fa-solid fa-bolt node-icon-fa" style="color:#f39c12;"></i>
+                                <div class="node-content"><h4>Electricity Export</h4><div class="node-val" id="val-export">-- MWe</div></div>
+                            </div>
+                            <div class="node-box diagram-node" id="node-agro">
+                                <img src="images/agro_greenhouse_1777201862102.png" class="node-img" alt="Agro"><h4>Agro-processing</h4>
+                            </div>
+                            <div class="node-box diagram-node" id="node-cold">
+                                <img src="images/cold_storage_1777201879226.png" class="node-img" alt="Cold Storage"><h4>Cold Storage</h4>
+                            </div>
+                            <div class="node-box diagram-node" id="node-brine">
+                                <img src="images/brine_recovery_1777201897777.png" class="node-img" alt="Brine"><h4>Brine Recovery</h4>
+                            </div>
+                            <div class="node-box diagram-node" id="node-indus">
+                                <img src="images/local_industry_1777201915985.png" class="node-img" alt="Industry"><h4>Local Industry</h4>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Description -->
+            <div class="stage-desc" id="stage-desc">The system captures solar energy, converts it to heat and electricity, desalinates water, treats it, and creates economic value.</div>
+
+            <!-- Controls -->
+            <div class="sim-controls">
+                <button class="sim-btn" id="btn-prev" disabled>← Previous</button>
+                <button class="sim-btn" id="btn-play">▶ Auto-Play</button>
+                <button class="sim-btn" id="btn-next">Next →</button>
+                <button class="sim-btn danger" id="btn-restart">↻ Restart</button>
+            </div>
+            <div class="sim-timer" id="sim-timer">Click Auto-Play or use arrows to begin</div>
+
+            <!-- Legend -->
+            <div class="legend">
+                <div class="leg-item"><div class="line thermal-flow"></div> Thermal</div>
+                <div class="leg-item"><div class="line elec-flow"></div> Electrical</div>
+                <div class="leg-item"><div class="line water-flow"></div> Water</div>
+                <div class="leg-item"><div class="line process-flow" style="width:25px;height:4px;background:linear-gradient(90deg,transparent 50%,#64748b 50%);background-size:10px 10px;animation:flowH 1s linear infinite;"></div> Process</div>
+            </div>
+
+            <!-- Detail Modal -->
+            <div id="subsystem-modal" class="modal">
+                <div class="modal-content">
+                    <span class="close-modal" id="close-modal">&times;</span>
+                    <h2 id="modal-title" style="color:#003366;margin-bottom:1rem;">Subsystem Detail</h2>
+                    <div class="schematic-wrapper">
+                        <img id="modal-img" src="" class="schematic-img">
+                        <svg id="modal-svg" class="flow-overlay" viewBox="0 0 800 500"></svg>
+                        <div id="modal-callouts"></div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="data.js"></script>
+    <script src="map_app.js"></script>
+    <script>
+    (function(){
+        const stageCols = document.querySelectorAll('.stage-col');
+        const dots = document.querySelectorAll('.progress-dot');
+        const desc = document.getElementById('stage-desc');
+        const timer = document.getElementById('sim-timer');
+        const btnPrev = document.getElementById('btn-prev');
+        const btnNext = document.getElementById('btn-next');
+        const btnPlay = document.getElementById('btn-play');
+        const btnRestart = document.getElementById('btn-restart');
+        let current = -1, autoInterval = null;
+        const DURATION = 6000;
+
+        const stageDescs = [
+            "Stage I: The heliostat mirror field concentrates sunlight onto the central particle receiver. Silica particles absorb heat at 800–1000°C and are stored in the TES for dispatchable energy. The Power Block converts this heat into electricity via sCO₂ or Rankine cycle.",
+            "Stage II: Thermal energy drives Multi-Effect Distillation (MED), while waste heat powers Adsorption Desalination (AD). Generated electricity runs Reverse Osmosis (RO) for additional freshwater production. All three methods work together as a hybrid system.",
+            "Stage III: Desalinated water passes through sand/carbon filtration, chemical dosing for pH balance, thermal pasteurization using residual heat, and UV disinfection for sterilization — producing safe, potable drinking water.",
+            "Stage IV: Surplus electricity is exported to local grids. Energy and water supply supports agro-processing, cold storage, and local industry. Brine from desalination is processed to recover valuable minerals instead of waste."
+        ];
+
+        function goTo(idx) {
+            if (idx < 0 || idx >= stageCols.length) return;
+            current = idx;
+            stageCols.forEach((c, i) => { c.classList.remove('focused','dimmed'); if (i === idx) { c.classList.add('focused'); c.scrollIntoView({behavior:'smooth',inline:'center',block:'nearest'}); } else { c.classList.add('dimmed'); } });
+            dots.forEach((d, i) => { d.classList.remove('active','done'); if (i < idx) d.classList.add('done'); if (i === idx) d.classList.add('active'); });
+            desc.innerText = stageDescs[idx];
+            timer.innerText = `Stage ${idx+1} of 4`;
+            btnPrev.disabled = (idx === 0);
+            btnNext.disabled = (idx === stageCols.length - 1);
+            if (idx === stageCols.length - 1) btnNext.innerText = 'Finish'; else btnNext.innerText = 'Next →';
+        }
+
+        function startAuto() {
+            if (autoInterval) return;
+            if (current < 0) goTo(0);
+            btnPlay.innerText = '⏸ Pause';
+            autoInterval = setInterval(() => {
+                if (current < stageCols.length - 1) goTo(current + 1);
+                else { stopAuto(); timer.innerText = '✔ Simulation Complete'; stageCols.forEach(c => c.classList.remove('dimmed','focused')); }
+            }, DURATION);
+        }
+
+        function stopAuto() { clearInterval(autoInterval); autoInterval = null; btnPlay.innerText = '▶ Auto-Play'; }
+
+        btnPrev.onclick = () => { stopAuto(); goTo(current - 1); };
+        btnNext.onclick = () => { stopAuto(); if (current < stageCols.length - 1) goTo(current + 1); else { stageCols.forEach(c => c.classList.remove('dimmed','focused')); timer.innerText = '✔ Simulation Complete'; } };
+        btnPlay.onclick = () => { autoInterval ? stopAuto() : startAuto(); };
+        btnRestart.onclick = () => { stopAuto(); goTo(0); };
+        dots.forEach(d => d.onclick = () => { stopAuto(); goTo(parseInt(d.dataset.stage)); });
+
+        // Detail Modal
+        const modal = document.getElementById('subsystem-modal');
+        const modalImg = document.getElementById('modal-img');
+        const modalTitle = document.getElementById('modal-title');
+        const modalSvg = document.getElementById('modal-svg');
+        const modalCallouts = document.getElementById('modal-callouts');
+        document.getElementById('close-modal').onclick = () => modal.style.display = 'none';
+        window.onclick = (e) => { if (e.target === modal) modal.style.display = 'none'; };
+
+        const dets = {
+            'node-solar': { t:'Heliostat Field & Receiver Tower', i:'images/csp_tower_1777200947910.png', f:'<path d="M 50 350 Q 400 50 750 350" fill="none" stroke="#ff9900" stroke-width="4" stroke-dasharray="10 5" class="anim-flow"/>', c:'<div class="callout" style="top:30px;left:350px;">Concentrated Beam</div><div class="callout" style="bottom:80px;left:80px;">Mirror Field</div>' },
+            'node-power': { t:'Power Block (sCO₂ / Steam)', i:'images/power_turbine_1777200969536.png', f:'<path d="M 50 250 L 750 250" fill="none" stroke="#22c55e" stroke-width="4" stroke-dasharray="10 5" class="anim-flow"/>', c:'<div class="callout" style="top:200px;left:30px;">Thermal In</div><div class="callout" style="top:200px;right:30px;">Electricity Out</div>' },
+            'node-med': { t:'Multi-Effect Distillation (MED)', i:'images/med_desalination_1777200985268.png', f:'<path d="M 50 200 L 750 200" fill="none" stroke="#3b82f6" stroke-width="4" stroke-dasharray="10 5" class="anim-flow"/>', c:'<div class="callout" style="top:150px;left:30px;">Saline In</div><div class="callout" style="top:150px;right:30px;">Distillate</div>' },
+            'node-ro': { t:'Reverse Osmosis (RO)', i:'images/detailed_ro.png', f:'<path d="M 50 150 L 600 150" fill="none" stroke="#3b82f6" stroke-width="4" stroke-dasharray="10 5" class="anim-flow"/><path d="M 600 150 L 750 100" fill="none" stroke="#22c55e" stroke-width="3" stroke-dasharray="8 4" class="anim-flow"/><path d="M 600 150 L 750 300" fill="none" stroke="#e67e22" stroke-width="3" stroke-dasharray="8 4" class="anim-flow"/>', c:'<div class="callout" style="top:100px;left:30px;">Sea Water</div><div class="callout" style="top:50px;right:30px;">Permeate</div><div class="callout" style="top:260px;right:30px;">Brine</div>' },
+            'node-filter': { t:'Sand & Carbon Filtration', i:'images/filtration_tank_1777201747770.png', f:'<path d="M 400 30 L 400 470" fill="none" stroke="#3b82f6" stroke-width="4" stroke-dasharray="10 5" class="anim-flow"/>', c:'<div class="callout" style="top:10px;left:420px;">Raw In</div><div class="callout" style="bottom:10px;left:420px;">Filtered</div>' },
+            'node-dose': { t:'Chemical Dosing', i:'images/chemical_dosing_1777201782209.png', f:'<path d="M 400 30 L 400 470" fill="none" stroke="#8b5cf6" stroke-width="4" stroke-dasharray="10 5" class="anim-flow"/>', c:'<div class="callout" style="top:10px;left:420px;">Water In</div><div class="callout" style="bottom:10px;left:420px;">Dosed</div>' },
+            'node-past': { t:'Thermal Pasteurization', i:'images/thermal_pasteurization_1777201815671.png', f:'<path d="M 400 30 L 400 470" fill="none" stroke="#ef4444" stroke-width="4" stroke-dasharray="10 5" class="anim-flow"/>', c:'<div class="callout" style="top:10px;left:420px;">In</div><div class="callout" style="bottom:10px;left:420px;">Sterilized</div>' },
+            'node-uv': { t:'UV Disinfection', i:'images/uv_disinfection_1777201843409.png', f:'<path d="M 400 30 L 400 470" fill="none" stroke="#eab308" stroke-width="4" stroke-dasharray="10 5" class="anim-flow"/>', c:'<div class="callout" style="top:10px;left:420px;">In</div><div class="callout" style="bottom:10px;left:420px;">Safe Out</div>' },
+            'node-agro': { t:'Agro-processing & Greenhouses', i:'images/agro_greenhouse_1777201862102.png', f:'<path d="M 50 400 L 750 400" fill="none" stroke="#22c55e" stroke-width="4" stroke-dasharray="10 5" class="anim-flow"/>', c:'<div class="callout" style="top:360px;left:30px;">Energy + Water</div>' },
+            'node-cold': { t:'Cold Storage & Refrigeration', i:'images/cold_storage_1777201879226.png', f:'<path d="M 50 250 L 750 250" fill="none" stroke="#3b82f6" stroke-width="4" stroke-dasharray="10 5" class="anim-flow"/>', c:'<div class="callout" style="top:200px;left:30px;">Power In</div>' },
+            'node-brine': { t:'Brine Mineral Recovery', i:'images/brine_recovery_1777201897777.png', f:'<path d="M 50 300 L 750 300" fill="none" stroke="#a855f7" stroke-width="4" stroke-dasharray="10 5" class="anim-flow"/>', c:'<div class="callout" style="top:250px;left:30px;">Brine In</div><div class="callout" style="top:250px;right:30px;">Minerals</div>' },
+            'node-indus': { t:'Local Industry', i:'images/local_industry_1777201915985.png', f:'<path d="M 50 300 L 750 300" fill="none" stroke="#64748b" stroke-width="4" stroke-dasharray="10 5" class="anim-flow"/>', c:'<div class="callout" style="top:250px;left:30px;">Energy In</div>' },
+        };
+
+        Object.keys(dets).forEach(id => {
+            const el = document.getElementById(id);
+            if (el) { el.style.cursor = 'pointer'; el.title = 'Click for detail'; el.onclick = (e) => { e.stopPropagation(); const d = dets[id]; modalTitle.innerText = d.t; modalImg.src = d.i; modalSvg.innerHTML = d.f; modalCallouts.innerHTML = d.c; modal.style.display = 'block'; }; }
+        });
+
+        // Auto-start
+        setTimeout(() => { goTo(0); startAuto(); }, 800);
+    })();
+    </script>
+</body>
+</html>

@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aeterna Sol-IV - Telemetry</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div class="app-container">
+        <!-- Sidebar Navigation -->
+        <nav class="sidebar">
+            <div class="logo">
+                <span class="icon">☀️</span>
+                <h2>Aeterna<br><span>Sol-IV</span></h2>
+            </div>
+            <ul class="nav-links">
+                <li><a href="index.html">Dashboard</a></li>
+                <li><a href="system_map.html">System Map</a></li>
+                <li class="active"><a href="telemetry.html">Telemetry</a></li>
+                <li><a href="#">Settings</a></li>
+            </ul>
+        </nav>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <header>
+                <div>
+                    <h1>Advanced Telemetry</h1>
+                    <p class="subtitle">Detailed component performance and efficiency metrics</p>
+                </div>
+                <div class="status-indicator">
+                    <span class="dot pulse"></span>
+                    <span>System Online</span>
+                </div>
+            </header>
+
+            <section class="kpi-grid">
+                <div class="kpi-card glass">
+                    <h3>Thermal Efficiency</h3>
+                    <div class="kpi-value">45.0%</div>
+                    <p style="color: var(--text-muted); font-size: 0.8rem;">Power Block Conversion</p>
+                </div>
+                <div class="kpi-card glass">
+                    <h3>Specific Energy (RO)</h3>
+                    <div class="kpi-value">3.5 <small>kWh/m³</small></div>
+                    <p style="color: var(--text-muted); font-size: 0.8rem;">Electrical Intensity</p>
+                </div>
+                <div class="kpi-card glass">
+                    <h3>Specific Heat (MED)</h3>
+                    <div class="kpi-value">45.0 <small>kWhth/m³</small></div>
+                    <p style="color: var(--text-muted); font-size: 0.8rem;">Thermal Intensity</p>
+                </div>
+                <div class="kpi-card glass">
+                    <h3>Waste Heat Recovery</h3>
+                    <div class="kpi-value">92%</div>
+                    <p style="color: var(--text-muted); font-size: 0.8rem;">AD Efficiency</p>
+                </div>
+            </section>
+
+            <div class="charts-section">
+                <div class="chart-container glass full-width">
+                    <h3>Energy Balance (Hourly)</h3>
+                    <div class="canvas-wrapper">
+                        <canvas id="telemetryChart"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <div class="glass" style="margin-top: 2rem; padding: 2rem;">
+                <h3>Subsystem Health Checks</h3>
+                <table style="width: 100%; border-collapse: collapse; margin-top: 1rem;">
+                    <thead>
+                        <tr style="text-align: left; border-bottom: 1px solid var(--glass-border);">
+                            <th style="padding: 1rem;">Subsystem</th>
+                            <th style="padding: 1rem;">Status</th>
+                            <th style="padding: 1rem;">Load</th>
+                            <th style="padding: 1rem;">Uptime</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr style="border-bottom: 1px solid var(--glass-border);">
+                            <td style="padding: 1rem;">CSP Particle Receiver</td>
+                            <td style="padding: 1rem;"><span class="positive">● Nominal</span></td>
+                            <td style="padding: 1rem;">Dynamic</td>
+                            <td style="padding: 1rem;">100%</td>
+                        </tr>
+                        <tr style="border-bottom: 1px solid var(--glass-border);">
+                            <td style="padding: 1rem;">TES Silica Bed</td>
+                            <td style="padding: 1rem;"><span class="positive">● Optimized</span></td>
+                            <td style="padding: 1rem;">Variable</td>
+                            <td style="padding: 1rem;">100%</td>
+                        </tr>
+                        <tr style="border-bottom: 1px solid var(--glass-border);">
+                            <td style="padding: 1rem;">Power Block (sCO2)</td>
+                            <td style="padding: 1rem;"><span class="positive">● Active</span></td>
+                            <td style="padding: 1rem;">85%</td>
+                            <td style="padding: 1rem;">99.8%</td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 1rem;">Desalination Hybrid Array</td>
+                            <td style="padding: 1rem;"><span class="positive">● Production</span></td>
+                            <td style="padding: 1rem;">Full</td>
+                            <td style="padding: 1rem;">100%</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </main>
+    </div>
+
+    <script src="data.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const ctx = document.getElementById('telemetryChart').getContext('2d');
+            const labels = simData.map(d => `H${Math.round(d['Time (h)'])}`);
+            
+            new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: labels,
+                    datasets: [
+                        {
+                            label: 'Thermal Input (MWth)',
+                            data: simData.map(d => d['Heat Generated (MWh_th)']),
+                            backgroundColor: 'rgba(255, 153, 0, 0.6)',
+                            borderColor: '#ff9900',
+                            borderWidth: 1
+                        },
+                        {
+                            label: 'Electrical Output (MWe)',
+                            data: simData.map(d => d['Electricity Generated (MWh_e)']),
+                            backgroundColor: 'rgba(0, 255, 153, 0.6)',
+                            borderColor: '#00ff99',
+                            borderWidth: 1
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { labels: { color: '#f0f0f5' } } },
+                    scales: {
+                        x: { grid: { color: 'rgba(255, 255, 255, 0.05)' }, ticks: { color: '#8e8e9f' } },
+                        y: { grid: { color: 'rgba(255, 255, 255, 0.05)' }, ticks: { color: '#8e8e9f' } }
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>

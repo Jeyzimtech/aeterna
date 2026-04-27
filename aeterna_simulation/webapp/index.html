@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aeterna Sol-IV Digital Twin | Infrastructure Simulation</title>
+    <meta name="description" content="Digital Twin dashboard for Aeterna Sol-IV: An integrated CSP and water purification infrastructure simulation.">
+    <meta property="og:title" content="Aeterna Sol-IV Digital Twin">
+    <meta property="og:description" content="Real-time thermodynamics and energy flow simulation for modular solar-thermal infrastructure.">
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="icon" href="https://fonts.gstatic.com/s/i/short-term/release/googlestandardsymbols/solar_power/default/24px.svg">
+    <!-- Chart.js for visualization -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div class="app-container">
+        <!-- Sidebar Navigation -->
+        <nav class="sidebar">
+            <div class="logo">
+                <span class="icon">☀️</span>
+                <h2>Aeterna<br><span>Sol-IV</span></h2>
+            </div>
+            <ul class="nav-links">
+                <li class="active"><a href="index.html">Dashboard</a></li>
+                <li><a href="system_map.html">System Map</a></li>
+                <li><a href="telemetry.html">Telemetry</a></li>
+                <li><a href="#">Settings</a></li>
+            </ul>
+        </nav>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <header>
+                <div>
+                    <h1>System Digital Twin</h1>
+                    <p class="subtitle">Real-time simulation metrics for integrated CSP-Desalination</p>
+                </div>
+                <div class="status-indicator">
+                    <span class="dot pulse"></span>
+                    <span>System Online</span>
+                </div>
+            </header>
+
+            <!-- KPI Cards -->
+            <section class="kpi-grid">
+                <div class="kpi-card glass">
+                    <div class="kpi-header">
+                        <h3>Total Electricity Generated</h3>
+                        <span class="icon">⚡</span>
+                    </div>
+                    <div class="kpi-value" id="kpi-elec-gen">-- MWh</div>
+                    <div class="kpi-trend positive">72-Hour Accumulation</div>
+                </div>
+                
+                <div class="kpi-card glass">
+                    <div class="kpi-header">
+                        <h3>Total Treated Water</h3>
+                        <span class="icon">💧</span>
+                    </div>
+                    <div class="kpi-value" id="kpi-water">-- m³</div>
+                    <div class="kpi-trend positive">Continuous Output</div>
+                </div>
+
+                <div class="kpi-card glass">
+                    <div class="kpi-header">
+                        <h3>Exported Electricity</h3>
+                        <span class="icon">🔋</span>
+                    </div>
+                    <div class="kpi-value" id="kpi-elec-exp">-- MWh</div>
+                    <div class="kpi-trend neutral">Surplus Available</div>
+                </div>
+
+                <div class="kpi-card glass">
+                    <div class="kpi-header">
+                        <h3>Average TES SOC</h3>
+                        <span class="icon">🌡️</span>
+                    </div>
+                    <div class="kpi-value" id="kpi-tes">-- %</div>
+                    <div class="kpi-trend positive">High Retention</div>
+                </div>
+            </section>
+
+            <!-- Charts Section -->
+            <section class="charts-section">
+                <!-- Electricity Chart -->
+                <div class="chart-container glass">
+                    <h3>Energy Subsystem Output</h3>
+                    <div class="canvas-wrapper">
+                        <canvas id="energyChart"></canvas>
+                    </div>
+                </div>
+
+                <!-- Water Chart -->
+                <div class="chart-container glass">
+                    <h3>Desalination Production (Hybrid)</h3>
+                    <div class="canvas-wrapper">
+                        <canvas id="waterChart"></canvas>
+                    </div>
+                </div>
+                
+                <!-- TES Chart -->
+                <div class="chart-container glass full-width">
+                    <h3>Thermal Energy Storage (TES) State of Charge</h3>
+                    <div class="canvas-wrapper">
+                        <canvas id="tesChart"></canvas>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Load data and app logic -->
+    <script src="data.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>

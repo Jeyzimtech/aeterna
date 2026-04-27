@@ -1,0 +1,113 @@
+/* System Map - Full Diagram with Auto-Play Walkthrough */
+* { box-sizing: border-box; }
+.light-theme { background-color: #fff; color: #333; }
+.map-main { background: #fff; padding: 1.5rem; flex: 1; overflow-y: auto; overflow-x: hidden; }
+
+.map-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; border-bottom: 2px solid #f0f0f0; padding-bottom: 1rem; flex-wrap: wrap; gap: 0.5rem; }
+.map-header h1 { font-size: clamp(0.9rem, 2.5vw, 1.6rem); color: #003366; }
+.map-header .subtitle { color: #555; font-size: clamp(0.7rem, 1.5vw, 0.95rem); }
+.light-status { background: #f0fdf4; color: #166534; border: 1px solid #bbf7d0; display: flex; align-items: center; gap: 0.5rem; padding: 0.4rem 1rem; border-radius: 20px; }
+
+/* Progress */
+.progress-bar { display: flex; gap: 0.3rem; justify-content: center; align-items: center; margin-bottom: 0.8rem; flex-wrap: wrap; }
+.progress-dot { width: 10px; height: 10px; border-radius: 50%; background: #d1d5db; transition: all 0.4s ease; cursor: pointer; }
+.progress-dot.active { background: #3b82f6; transform: scale(1.4); box-shadow: 0 0 8px rgba(59,130,246,0.5); }
+.progress-dot.done { background: #22c55e; }
+.progress-label { font-size: 0.8rem; color: #6b7280; margin-right: 0.3rem; }
+
+/* Full Diagram Container */
+.diagram-scroll { width: 100%; overflow-x: auto; padding-bottom: 1rem; }
+.diagram-container { display: flex; align-items: stretch; gap: 0; min-width: 1100px; padding: 0.5rem; }
+
+/* Stage Columns */
+.stage-col { display: flex; flex-direction: column; align-items: center; flex: 1; min-width: 240px; border-radius: 10px; padding: 1rem 0.8rem; position: relative; transition: all 0.6s ease; }
+.stage-col.dimmed { opacity: 0.12; filter: grayscale(100%) blur(1px); transform: scale(0.97); }
+.stage-col.focused { opacity: 1; filter: none; transform: scale(1.02); box-shadow: 0 0 25px rgba(0,0,0,0.08); z-index: 5; }
+
+.stage1 { background: #fffbf0; border: 2px solid #fde68a; }
+.stage2 { background: #f0f6ff; border: 2px solid #bfdbfe; }
+.stage3 { background: #f0fdf4; border: 2px solid #bbf7d0; }
+.stage4 { background: #faf5ff; border: 2px solid #e9d5ff; }
+
+.stage-title { text-align: center; font-weight: 700; font-size: 0.95rem; margin-bottom: 1rem; }
+.s1-title { color: #b45309; } .s2-title { color: #1d4ed8; } .s3-title { color: #15803d; } .s4-title { color: #7e22ce; }
+.stage-title span { font-size: 0.78rem; font-weight: 600; opacity: 0.8; }
+
+/* Bridge connectors */
+.bridge-col { display: flex; flex-direction: column; justify-content: center; align-items: center; width: 35px; min-width: 35px; position: relative; gap: 40px; }
+.pipe-bridge { width: 35px; height: 5px; border-radius: 3px; }
+
+/* Nodes */
+.node-box { background: #fff; border: 1px solid #e5e7eb; border-radius: 8px; padding: 0.6rem; display: flex; align-items: center; gap: 0.6rem; width: 100%; margin-bottom: 0.4rem; box-shadow: 0 2px 4px rgba(0,0,0,0.04); color: #1f2937; cursor: pointer; transition: all 0.3s ease; position: relative; z-index: 2; }
+.node-box:hover { transform: translateY(-2px); box-shadow: 0 6px 16px rgba(0,0,0,0.1); }
+.diagram-node { flex-direction: column; align-items: center; text-align: center; }
+.node-img { width: 100%; height: 100px; object-fit: contain; border-radius: 5px; border: 1px solid #f3f4f6; }
+.node-icon-fa { font-size: 1.5rem; width: 35px; text-align: center; }
+.node-content h4 { font-size: 0.78rem; color: #4b5563; font-weight: 600; margin-bottom: 0.15rem; }
+.node-val { font-weight: 700; font-size: 0.9rem; color: #111827; }
+
+.route-box { border: 1px solid #e5e7eb; background: #fff; border-radius: 8px; padding: 0.6rem; margin-bottom: 0.6rem; width: 100%; }
+.thermal-route { border: 2px solid #fde68a; } .elec-route { border: 2px solid #bbf7d0; }
+.route-box h5 { font-size: 0.7rem; color: #6b7280; margin-bottom: 0.5rem; text-align: center; font-weight: 700; }
+.row-nodes { display: flex; align-items: center; justify-content: space-between; width: 100%; gap: 0.4rem; }
+.node-stack { display: flex; flex-direction: column; align-items: center; width: 100%; }
+.node-stack.spread { gap: 0.6rem; }
+.node-box.highlight { border: 2px solid #3b82f6; background: #eff6ff; }
+.node-box.highlight-safe { border: 2px solid #22c55e; background: #f0fdf4; }
+.node-box.export { border: 2px solid #a855f7; background: #faf5ff; }
+
+/* Pipes */
+.pipe { position: relative; z-index: 1; }
+.pipe-v { width: 5px; height: 20px; margin: 0 auto; border-radius: 3px; }
+.pipe-h { height: 5px; width: 20px; border-radius: 3px; }
+
+/* Flow Animations */
+.thermal-flow { background: linear-gradient(90deg, transparent 50%, #f59e0b 50%); background-size: 10px 10px; animation: flowH 0.8s linear infinite; }
+.pipe-v.thermal-flow { background: linear-gradient(180deg, transparent 50%, #f59e0b 50%); background-size: 10px 10px; animation: flowV 0.8s linear infinite; }
+.elec-flow { background: linear-gradient(90deg, transparent 50%, #22c55e 50%); background-size: 10px 10px; animation: flowH 0.8s linear infinite; }
+.water-flow { background: linear-gradient(90deg, transparent 50%, #3b82f6 50%); background-size: 10px 10px; animation: flowH 0.8s linear infinite; }
+.pipe-v.water-flow { background: linear-gradient(180deg, transparent 50%, #3b82f6 50%); background-size: 10px 10px; animation: flowV 0.8s linear infinite; }
+.process-flow { background: linear-gradient(180deg, transparent 50%, #64748b 50%); background-size: 10px 10px; animation: flowV 0.8s linear infinite; }
+@keyframes flowH { 0% { background-position: 0 0; } 100% { background-position: 20px 0; } }
+@keyframes flowV { 0% { background-position: 0 0; } 100% { background-position: 0 20px; } }
+
+/* Controls */
+.sim-controls { display: flex; justify-content: center; gap: 0.8rem; margin-top: 1rem; flex-wrap: wrap; }
+.sim-btn { background: #003366; color: #fff; border: none; padding: 0.5rem 1.2rem; border-radius: 25px; font-weight: 700; font-family: 'Outfit', sans-serif; cursor: pointer; font-size: 0.85rem; transition: all 0.3s ease; }
+.sim-btn:hover { background: #00d2ff; color: #003366; transform: translateY(-2px); }
+.sim-btn.danger { background: #ef4444; } .sim-btn.danger:hover { background: #dc2626; color: #fff; }
+.sim-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+.sim-timer { font-size: 0.85rem; color: #6b7280; text-align: center; margin-top: 0.5rem; font-weight: 500; }
+
+/* Description panel */
+.stage-desc { text-align: center; padding: 0.8rem 1.5rem; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 10px; margin-top: 0.8rem; font-size: 0.9rem; color: #475569; line-height: 1.5; min-height: 60px; transition: opacity 0.4s ease; }
+
+/* Modal */
+.modal { display: none; position: fixed; z-index: 2000; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); backdrop-filter: blur(8px); }
+.modal-content { background: #fff; margin: 3% auto; padding: 1.5rem; border-radius: 15px; width: 90%; max-width: 750px; position: relative; box-shadow: 0 25px 50px rgba(0,0,0,0.4); max-height: 90vh; overflow-y: auto; }
+.close-modal { position: absolute; top: 10px; right: 18px; font-size: 26px; font-weight: bold; cursor: pointer; color: #333; }
+.schematic-wrapper { position: relative; width: 100%; text-align: center; }
+.schematic-img { width: 100%; height: auto; border-radius: 8px; }
+.flow-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; }
+.callout { position: absolute; background: rgba(255,255,255,0.92); border: 1px solid #3b82f6; padding: 3px 8px; border-radius: 4px; font-size: 0.7rem; font-weight: 700; color: #1e40af; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+.anim-flow { animation: dash 2s linear infinite; }
+@keyframes dash { to { stroke-dashoffset: -100; } }
+
+/* Legend */
+.legend { display: flex; justify-content: center; gap: 1.2rem; padding: 0.6rem; background: #f9fafb; border: 1px solid #e5e7eb; border-radius: 8px; flex-wrap: wrap; margin-top: 0.8rem; }
+.leg-item { display: flex; align-items: center; gap: 0.4rem; font-size: 0.8rem; font-weight: 600; color: #4b5563; }
+.leg-item .line { width: 25px; height: 4px; border-radius: 2px; }
+
+/* Responsive */
+@media (max-width: 1024px) { .diagram-container { min-width: 900px; } }
+@media (max-width: 768px) {
+    .map-main { padding: 0.6rem; }
+    .map-header { flex-direction: column; text-align: center; }
+    .diagram-container { min-width: 700px; flex-wrap: nowrap; }
+    .stage-col { min-width: 180px; padding: 0.6rem; }
+    .node-img { height: 70px; }
+    .sim-controls { gap: 0.4rem; }
+    .sim-btn { padding: 0.4rem 0.8rem; font-size: 0.75rem; }
+    .modal-content { width: 95%; margin: 5% auto; padding: 1rem; }
+    .callout { font-size: 0.6rem; padding: 2px 5px; }
+}
